@@ -1,8 +1,25 @@
-opencv-python>=4.8.0
-mediapipe>=0.10.0
-PyQt5>=5.15.0
-numpy>=1.24.0
+# Core dependencies for Monkey Pose Mimic
+# Python 3.12.x required (MediaPipe not compatible with Python 3.13+)
 
-# NOT: MediaPipe sadece Python 3.12 ve altında çalışır
-# Python 3.13+ için Python 3.12 kurmanız gerekir
+# Computer Vision
+opencv-python==4.10.0.84
+mediapipe==0.10.14
+
+# GUI Framework
+PyQt5==5.15.11
+PyQt5-Qt5==5.15.2
+PyQt5-sip==12.15.0
+
+# Scientific Computing
+numpy==1.26.4
+
+# Development dependencies (optional)
+# Uncomment to install dev tools:
+# pytest==8.3.4
+# black==24.10.0
+# mypy==1.13.0
+# ruff==0.7.4
+
+# NOTE: MediaPipe only works with Python 3.12 and below
+# If using Python 3.13+, you must install Python 3.12
 

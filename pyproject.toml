@@ -1,0 +1,69 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "monkey-pose-mimic"
+version = "2.0.0"
+description = "Real-time pose detection interactive monkey mimic application"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = {text = "MIT"}
+authors = [
+    {name = "Beyza Tanriverdi", email = "tnrvrd.beyza@gmail.com"},
+    {name = "Kadir Talha Uncu", email = "talhauncu.dev@gmail.com"}
+]
+keywords = ["pose-detection", "mediapipe", "opencv", "computer-vision", "pyqt5"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Image Recognition",
+    "Topic :: Multimedia :: Video :: Capture",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "opencv-python>=4.10.0",
+    "mediapipe>=0.10.14",
+    "PyQt5>=5.15.11",
+    "numpy>=1.26.4,<2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.0",
+    "black>=24.0.0",
+    "mypy>=1.11.0",
+    "ruff>=0.6.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/beyzatanriverdi/monkey_pose_mimic"
+Repository = "https://github.com/beyzatanriverdi/monkey_pose_mimic"
+"Bug Tracker" = "https://github.com/beyzatanriverdi/monkey_pose_mimic/issues"
+
+[project.scripts]
+monkey-mimic = "main:main"
+
+[tool.black]
+line-length = 100
+target-version = ['py312']
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "A", "C4", "PT"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
