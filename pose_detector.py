@@ -122,39 +122,44 @@ class PoseDetector:
         # Reset debug info
         self.debug_info = DebugInfo()
 
+        # Update debug info regardless of landmark visibility
+        try:
+            if face_results and face_results.multi_face_landmarks:
+                self.debug_info.face_detected = True
+            
+            if hand_results and hand_results.multi_hand_landmarks:
+                self.debug_info.hands_detected = len(hand_results.multi_hand_landmarks)
+        except Exception as e:
+            logger.error(f"Failed to update debug info: {e}")
+
         # Draw landmarks only if enabled
         if show_landmarks:
-            # Draw face landmarks (lips only)
-            if face_results.multi_face_landmarks:
-                self.debug_info.face_detected = True
-                for face_landmarks in face_results.multi_face_landmarks:
-                    self.mp_drawing.draw_landmarks(
-                        frame,
-                        face_landmarks,
-                        self.mp_face_mesh.FACEMESH_LIPS,
-                        landmark_drawing_spec=None,
-                        connection_drawing_spec=self.mp_drawing.DrawingSpec(
-                            color=(0, 255, 255), thickness=1
-                        ),
-                    )
+            try:
+                # Draw face landmarks (lips only)
+                if face_results and face_results.multi_face_landmarks:
+                    for face_landmarks in face_results.multi_face_landmarks:
+                        self.mp_drawing.draw_landmarks(
+                            frame,
+                            face_landmarks,
+                            self.mp_face_mesh.FACEMESH_LIPS,
+                            landmark_drawing_spec=None,
+                            connection_drawing_spec=self.mp_drawing.DrawingSpec(
+                                color=(0, 255, 255), thickness=1
+                            ),
+                        )
 
-            # Draw hand landmarks
-            if hand_results.multi_hand_landmarks:
-                self.debug_info.hands_detected = len(hand_results.multi_hand_landmarks)
-                for hand_landmarks in hand_results.multi_hand_landmarks:
-                    self.mp_drawing.draw_landmarks(
-                        frame,
-                        hand_landmarks,
-                        self.mp_hands.HAND_CONNECTIONS,
-                        self.mp_drawing_styles.get_default_hand_landmarks_style(),
-                        self.mp_drawing_styles.get_default_hand_connections_style(),
-                    )
-        else:
-            # Still update debug info even if not drawing
-            if face_results.multi_face_landmarks:
-                self.debug_info.face_detected = True
-            if hand_results.multi_hand_landmarks:
-                self.debug_info.hands_detected = len(hand_results.multi_hand_landmarks)
+                # Draw hand landmarks
+                if hand_results and hand_results.multi_hand_landmarks:
+                    for hand_landmarks in hand_results.multi_hand_landmarks:
+                        self.mp_drawing.draw_landmarks(
+                            frame,
+                            hand_landmarks,
+                            self.mp_hands.HAND_CONNECTIONS,
+                            self.mp_drawing_styles.get_default_hand_landmarks_style(),
+                            self.mp_drawing_styles.get_default_hand_connections_style(),
+                        )
+            except Exception as e:
+                logger.error(f"Failed to draw landmarks: {e}")
 
         # Determine pose
         pose_name = self._determine_pose(pose_results, hand_results, face_results)
@@ -270,6 +275,10 @@ class PoseDetector:
         hand_results: Optional[mp.solutions.hands.Hands],
     ) -> bool:
         """Check if hand is raised above head level"""
+        if not pose_results or not hand_results:
+            self.debug_info.hand_height = 0.0
+            return False
+            
         if not pose_results.pose_landmarks or not hand_results.multi_hand_landmarks:
             self.debug_info.hand_height = 0.0
             return False
@@ -291,24 +300,33 @@ class PoseDetector:
         self, face_results: Optional[mp.solutions.face_mesh.FaceMesh]
     ) -> bool:
         """Check if mouth is open (shocking pose)"""
+        if not face_results:
+            self.debug_info.mouth_ratio = 0.0
+            return False
+            
         if not face_results.multi_face_landmarks:
             self.debug_info.mouth_ratio = 0.0
             return False
 
-        face_landmarks = face_results.multi_face_landmarks[0].landmark
+        try:
+            face_landmarks = face_results.multi_face_landmarks[0].landmark
 
-        # Mouth landmarks
-        upper_lip = face_landmarks[13].y
-        lower_lip = face_landmarks[14].y
-        forehead = face_landmarks[10].y
-        chin = face_landmarks[152].y
-        face_height = abs(chin - forehead)
+            # Mouth landmarks
+            upper_lip = face_landmarks[13].y
+            lower_lip = face_landmarks[14].y
+            forehead = face_landmarks[10].y
+            chin = face_landmarks[152].y
+            face_height = abs(chin - forehead)
 
-        mouth_opening = abs(lower_lip - upper_lip)
-        mouth_ratio = mouth_opening / face_height if face_height > 0 else 0
-        self.debug_info.mouth_ratio = mouth_ratio
+            mouth_opening = abs(lower_lip - upper_lip)
+            mouth_ratio = mouth_opening / face_height if face_height > 0 else 0
+            self.debug_info.mouth_ratio = mouth_ratio
 
-        return mouth_ratio > CONFIG.pose.mouth_open_threshold
+            return mouth_ratio > CONFIG.pose.mouth_open_threshold
+        except (IndexError, AttributeError) as e:
+            logger.error(f"Error checking shocking pose: {e}")
+            self.debug_info.mouth_ratio = 0.0
+            return False
 
     def _is_thinking(
         self,
@@ -317,39 +335,46 @@ class PoseDetector:
         face_results: Optional[mp.solutions.face_mesh.FaceMesh],
     ) -> bool:
         """Check if hand is touching face (thinking pose)"""
+        if not face_results or not hand_results:
+            return False
+            
         if not face_results.multi_face_landmarks or not hand_results.multi_hand_landmarks:
             return False
 
-        face_landmarks = face_results.multi_face_landmarks[0].landmark
+        try:
+            face_landmarks = face_results.multi_face_landmarks[0].landmark
 
-        # Mouth region landmarks
-        mouth_points = [
-            face_landmarks[13],  # Upper lip
-            face_landmarks[14],  # Lower lip
-            face_landmarks[152],  # Chin
-            face_landmarks[0],  # Mouth center
-        ]
-
-        for hand_landmarks in hand_results.multi_hand_landmarks:
-            # Finger tips
-            finger_tips = [
-                hand_landmarks.landmark[self.mp_hands.HandLandmark.THUMB_TIP],
-                hand_landmarks.landmark[self.mp_hands.HandLandmark.INDEX_FINGER_TIP],
-                hand_landmarks.landmark[self.mp_hands.HandLandmark.MIDDLE_FINGER_TIP],
+            # Mouth region landmarks
+            mouth_points = [
+                face_landmarks[13],  # Upper lip
+                face_landmarks[14],  # Lower lip
+                face_landmarks[152],  # Chin
+                face_landmarks[0],  # Mouth center
             ]
 
-            # Check if any finger is close to mouth region
-            for finger_tip in finger_tips:
-                for mouth_point in mouth_points:
-                    distance = np.sqrt(
-                        (finger_tip.x - mouth_point.x) ** 2
-                        + (finger_tip.y - mouth_point.y) ** 2
-                    )
+            for hand_landmarks in hand_results.multi_hand_landmarks:
+                # Finger tips
+                finger_tips = [
+                    hand_landmarks.landmark[self.mp_hands.HandLandmark.THUMB_TIP],
+                    hand_landmarks.landmark[self.mp_hands.HandLandmark.INDEX_FINGER_TIP],
+                    hand_landmarks.landmark[self.mp_hands.HandLandmark.MIDDLE_FINGER_TIP],
+                ]
 
-                    if distance < CONFIG.pose.hand_to_face_threshold:
-                        return True
+                # Check if any finger is close to mouth region
+                for finger_tip in finger_tips:
+                    for mouth_point in mouth_points:
+                        distance = np.sqrt(
+                            (finger_tip.x - mouth_point.x) ** 2
+                            + (finger_tip.y - mouth_point.y) ** 2
+                        )
 
-        return False
+                        if distance < CONFIG.pose.hand_to_face_threshold:
+                            return True
+
+            return False
+        except (IndexError, AttributeError) as e:
+            logger.error(f"Error checking thinking pose: {e}")
+            return False
 
     def release(self) -> None:
         """Release MediaPipe resources"""

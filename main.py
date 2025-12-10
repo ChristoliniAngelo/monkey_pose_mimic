@@ -488,7 +488,8 @@ class MonkeyPoseApp(QMainWindow):
         # Pose detection with landmark visibility control
         processed_frame, pose_name = self.pose_detector.detect_pose(
             frame, 
-            show_landmarks=self.show_landmarks
+            show_landmarks=self.show_landmarks,
+            language=self.current_language
         )
 
         # Display camera feed
