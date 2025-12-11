@@ -427,7 +427,7 @@ class MonkeyPoseApp(QMainWindow):
 
     def _on_landmark_toggle(self, state: int) -> None:
         """Handle landmark visibility toggle"""
-        self.show_landmarks = state == Qt.CheckState.Checked.value
+        self.show_landmarks = state == Qt.CheckState.Checked
         logger.info(f"Landmarks visibility: {self.show_landmarks}")
         
         # Update checkbox text

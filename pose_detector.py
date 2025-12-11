@@ -1,8 +1,3 @@
-"""
-Pose Detection Module
-MediaPipe-based pose, hand, and face detection with configurable landmark visibility
-"""
-
 from __future__ import annotations
 
 import logging
@@ -110,7 +105,8 @@ class PoseDetector:
             logger.error(f"Failed to convert frame to RGB: {e}")
             return frame, "default"
 
-        # Run detections
+        # ALWAYS run detections - regardless of show_landmarks setting
+        # This ensures pose detection works even when landmarks are hidden
         try:
             pose_results = self.pose.process(rgb_frame)
             hand_results = self.hands.process(rgb_frame)
@@ -122,7 +118,7 @@ class PoseDetector:
         # Reset debug info
         self.debug_info = DebugInfo()
 
-        # Update debug info regardless of landmark visibility
+        # Update debug info
         try:
             if face_results and face_results.multi_face_landmarks:
                 self.debug_info.face_detected = True
@@ -132,14 +128,20 @@ class PoseDetector:
         except Exception as e:
             logger.error(f"Failed to update debug info: {e}")
 
-        # Draw landmarks only if enabled
+        # Determine pose BEFORE drawing (so it works regardless of landmark visibility)
+        pose_name = self._determine_pose(pose_results, hand_results, face_results)
+
+        # Only draw landmarks if enabled
         if show_landmarks:
+            # Create a copy of the frame for drawing
+            display_frame = frame.copy()
+            
             try:
                 # Draw face landmarks (lips only)
                 if face_results and face_results.multi_face_landmarks:
                     for face_landmarks in face_results.multi_face_landmarks:
                         self.mp_drawing.draw_landmarks(
-                            frame,
+                            display_frame,
                             face_landmarks,
                             self.mp_face_mesh.FACEMESH_LIPS,
                             landmark_drawing_spec=None,
@@ -152,7 +154,7 @@ class PoseDetector:
                 if hand_results and hand_results.multi_hand_landmarks:
                     for hand_landmarks in hand_results.multi_hand_landmarks:
                         self.mp_drawing.draw_landmarks(
-                            frame,
+                            display_frame,
                             hand_landmarks,
                             self.mp_hands.HAND_CONNECTIONS,
                             self.mp_drawing_styles.get_default_hand_landmarks_style(),
@@ -161,14 +163,14 @@ class PoseDetector:
             except Exception as e:
                 logger.error(f"Failed to draw landmarks: {e}")
 
-        # Determine pose
-        pose_name = self._determine_pose(pose_results, hand_results, face_results)
-
-        # Show debug information if enabled
-        if CONFIG.show_debug_info and show_landmarks:
-            self._draw_debug_info(frame, pose_name)
-
-        return frame, pose_name
+            # Show debug information if enabled
+            if CONFIG.show_debug_info:
+                self._draw_debug_info(display_frame, pose_name)
+            
+            return display_frame, pose_name
+        else:
+            # Return original frame without any drawings
+            return frame, pose_name
 
     def _draw_debug_info(self, frame: npt.NDArray[np.uint8], pose_name: str) -> None:
         """Draw debug information on the frame"""

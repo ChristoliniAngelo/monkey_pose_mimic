@@ -139,7 +139,7 @@ POSE_NAMES_ID: Final[dict[str, str]] = {
 # English
 POSE_NAMES_EN: Final[dict[str, str]] = {
     "raising_hand": "👋 Raising Hand",
-    "shocking": "😲 Shocking (Mouth Open)",
+    "shocking": "😲 Shocking (Open Mouth)",
     "thinking": "🤔 Thinking (Hand on Face)",
     "default": "🙂 Default Pose"
 }

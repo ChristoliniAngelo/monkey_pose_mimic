@@ -1,438 +1,254 @@
+
 # Monkey Pose Mimic
 
-> Aplikasi desktop interaktif untuk deteksi pose real-time dengan karakter monyet berbasis MediaPipe dan OpenCV
+> Real-time pose detection desktop app with animated monkey character using MediaPipe and OpenCV
 
-[English](https://claude.ai/chat/README.md) | **Bahasa Indonesia** | [Türkçe](https://claude.ai/chat/README.tr.md)
-
----
-
-## Deskripsi
-
-Monkey Pose Mimic adalah aplikasi desktop yang mendeteksi gerakan user melalui camera dan menampilkan representasi visual menggunakan character monyet animasi. Aplikasi ini memanfaatkan teknologi MediaPipe untuk pose detection dan OpenCV untuk video processing real-time.
-
-### Pose yang Didukung
-
-* **Raising Hand** - Kedua tangan diangkat di atas kepala
-* **Shocking Expression** - Mulut terbuka lebar
-* **Thinking Pose** - Tangan di dekat wajah atau dagu
-* **Normal Position** - Pose netral default
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://claude.ai/chat/LICENSE)
 
 ---
 
-## Features
+## 📖 About
 
-### Version 2.0.0
+Monkey Pose Mimic detects your movements through your webcam and displays them using an animated monkey character. The app uses MediaPipe for pose detection and OpenCV for real-time video processing.
 
-* **Modern Python Architecture** - Menggunakan type hints Python 3.12, dataclass, dan best practices
-* **Comprehensive Logging** - System logging untuk debugging dan monitoring
-* **Centralized Configuration** - Management konfigurasi terpusat melalui `config.py`
-* **Enhanced Error Handling** - Error handling yang robust dan informatif
-* **Modern Packaging** - Menggunakan `pyproject.toml` untuk packaging
-* **Multi-language Support** - Dokumentasi dalam bahasa Indonesia, Inggris, dan Turki
+### Supported Poses
+
+* **🙋 Raising Hand** - Both hands raised above head
+* **😲 Shocking** - Mouth wide open
+* **🤔 Thinking** - Hand near face or chin
+* **🙂 Normal** - Default neutral pose
 
 ---
 
-## System Requirements
+## ✨ Features
+
+* **Real-time pose detection** using MediaPipe
+* **4 different poses** automatically detected
+* **Multi-language support** (English, Indonesian, Turkish)
+* **Modern UI** with macOS-inspired design
+* **Customizable settings** through config file
+* **Landmark visibility toggle** - Show/hide detection lines
+
+---
+
+## 🛠️ Requirements
 
 ### Software
 
-* **Python 3.12.x** (Wajib - MediaPipe tidak kompatibel dengan Python 3.13+)
-* **Webcam** (Built-in atau eksternal)
-* **Operating System:** Windows 10/11, macOS 10.15+, atau Linux (Ubuntu 20.04+)
+* **Python 3.12.x** (Required - MediaPipe doesn't support Python 3.13+)
+* **Webcam** (built-in or external)
+* **OS:** Windows 10/11, macOS 10.15+, or Linux (Ubuntu 20.04+)
 
-### Hardware (Minimum)
+### Hardware
 
-* **Processor:** Intel Core i3 atau setara
-* **RAM:** 4 GB
-* **Webcam:** Resolusi minimum 640x480
-
-### Hardware (Recommended)
-
-* **Processor:** Intel Core i5 atau lebih tinggi
-* **RAM:** 8 GB atau lebih
-* **Webcam:** Resolusi 720p atau lebih tinggi
+* **Minimum:** Intel Core i3, 4GB RAM, 640x480 webcam
+* **Recommended:** Intel Core i5+, 8GB RAM, 720p+ webcam
 
 ---
 
-## Installation
+## 🚀 Quick Start
 
-### Step 1: Install Python 3.12
+### 1. Install Python
 
-**PENTING:** MediaPipe saat ini tidak mendukung Python 3.13 atau versi lebih tinggi.
+**Important:** MediaPipe requires Python 3.12 or lower.
 
-#### Download Python 3.12.8
+Download Python 3.12.8:
 
-* **Windows:** [python-3.12.8-amd64.exe](https://www.python.org/ftp/python/3.12.8/python-3.12.8-amd64.exe)
-* **macOS:** [python-3.12.8-macos11.pkg](https://www.python.org/ftp/python/3.12.8/python-3.12.8-macos11.pkg)
-* **Linux:** Gunakan package manager distribusi Anda
+* **Windows:** [Download](https://www.python.org/ftp/python/3.12.8/python-3.12.8-amd64.exe)
+* **macOS:** [Download](https://www.python.org/ftp/python/3.12.8/python-3.12.8-macos11.pkg)
+* **Linux:** Use your package manager
 
 ```bash
 # Ubuntu/Debian
-sudo apt update
 sudo apt install python3.12 python3.12-venv
-
-# Fedora
-sudo dnf install python3.12
-
-# Arch Linux
-sudo pacman -S python312
 ```
 
-### Step 2: Clone Repository
+### 2. Clone & Setup
 
 ```bash
+# Clone repository
 git clone https://github.com/beyzatanriverdi/monkey_pose_mimic.git
 cd monkey_pose_mimic
-```
 
-### Step 3: Setup Environment
-
-#### Automatic Method (Recommended)
-
-**Windows:**
-
-```bash
+# Run setup script
+# Windows:
 setup.bat
-```
 
-**macOS/Linux:**
-
-```bash
+# macOS/Linux:
 chmod +x setup.sh
 ./setup.sh
 ```
 
-#### Manual Method
+### 3. Run Application
 
 ```bash
-# Buat virtual environment
-python3.12 -m venv venv
-
-# Aktifkan virtual environment
 # Windows:
-venv\Scripts\activate
+run.bat
 
 # macOS/Linux:
-source venv/bin/activate
-
-# Upgrade pip
-python -m pip install --upgrade pip
-
-# Install dependencies
-pip install -r requirements.txt
-```
-
----
-
-## How to Run
-
-### Quick Method
-
-**Windows:**
-
-```bash
-run.bat
-```
-
-**macOS/Linux:**
-
-```bash
-chmod +x run.sh
 ./run.sh
 ```
 
-### Manual Method
+---
 
-**Dengan virtual environment:**
+## 📚 How to Use
 
-```bash
-# Aktifkan virtual environment terlebih dahulu
-# Windows: venv\Scripts\activate
-# macOS/Linux: source venv/bin/activate
+1. **Launch** the application
+2. **Allow** camera access when prompted
+3. **Position yourself** 1-2 meters from the camera
+4. **Try different poses:**
+   * Raise both hands above your head
+   * Open your mouth wide
+   * Put your hand near your face
+   * Stand normally
 
-python main.py
+The monkey character will mirror your pose in real-time!
+
+---
+
+## ⚙️ Configuration
+
+Edit `config.py` to customize settings:
+
+```python
+# Camera settings
+class CameraConfig:
+    device_id: int = 0      # Camera ID (try 0, 1, 2...)
+    width: int = 640        # Resolution
+    height: int = 480
+    fps: int = 40           # Frame rate
+
+# Detection sensitivity
+class PoseDetectionConfig:
+    hand_raise_threshold: float = 0.05
+    mouth_open_threshold: float = 0.15
+    hand_to_face_threshold: float = 0.08
 ```
 
-**Tanpa virtual environment:**
+---
 
-```bash
-# Windows
-py -3.12 main.py
+## 🐛 Troubleshooting
 
-# macOS/Linux
-python3.12 main.py
+### Camera Not Detected
+
+Try changing camera ID in `config.py`:
+
+```python
+device_id: int = 1  # Try 0, 1, 2, etc.
 ```
 
----
+### MediaPipe Error
 
-## Usage Guide
+Check Python version:
 
-1. **Run aplikasi** menggunakan salah satu method di atas
-2. **Allow camera access** ketika browser atau system meminta permission
-3. **Position diri** di tengah frame camera dengan jarak 1-2 meter
-4. **Lakukan berbagai pose:**
-   * Angkat kedua tangan di atas kepala untuk pose "Raising Hand"
-   * Buka mulut lebar-lebar untuk pose "Shocking"
-   * Letakkan tangan di dekat wajah atau dagu untuk pose "Thinking"
-   * Berdiri netral untuk pose "Default"
+```bash
+python --version  # Should show Python 3.12.x
+```
 
-Character monyet akan secara otomatis mimic pose Anda dalam real-time.
+### Slow Performance
 
----
+Reduce resolution in `config.py`:
 
-## Technology Stack
+```python
+width: int = 320
+height: int = 240
+fps: int = 20
+```
 
-### Core Dependencies
+### Need More Help?
 
-| Library   | Version | Function                       |
-| --------- | ------- | ------------------------------ |
-| Python    | 3.12.x  | Programming language utama     |
-| MediaPipe | 0.10.14 | Pose, hand, dan face detection |
-| OpenCV    | 4.10.0  | Video dan image processing     |
-| PyQt5     | 5.15.11 | GUI framework                  |
-| NumPy     | 1.26.4  | Numeric computation            |
-
-### Development Tools (Optional)
-
-* **Black** - Code formatter untuk Python
-* **Mypy** - Static type checker
-* **Ruff** - Fast linter
-* **Pytest** - Testing framework
+* Check [Issues](https://github.com/beyzatanriverdi/monkey_pose_mimic/issues)
+* Create a new issue with:
+  * Python version
+  * Operating system
+  * Complete error message
 
 ---
 
-## Project Structure
+## 📦 Project Structure
 
 ```
 monkey_pose_mimic/
-├── main.py                  # Application entry point
-├── pose_detector.py         # MediaPipe pose detection module
-├── config.py               # Centralized configuration file
-├── requirements.txt        # Python dependencies
-├── pyproject.toml         # Modern project configuration
-├── LICENSE                # MIT License
-├── setup.bat              # Setup script untuk Windows
-├── setup.sh               # Setup script untuk macOS/Linux
-├── run.bat                # Run script untuk Windows
-├── run.sh                 # Run script untuk macOS/Linux
-├── assets/                # Image assets
+├── main.py              # Application entry point
+├── pose_detector.py     # Pose detection logic
+├── config.py            # Settings
+├── requirements.txt     # Dependencies
+├── assets/              # Monkey images
 │   ├── default_pose.jpg
 │   ├── raising_hand_pose.jpg
 │   ├── shocking_pose.jpg
 │   └── thinking_pose.jpg
-├── README.md              # Documentation (English)
-├── README.id.md           # Documentation (Bahasa Indonesia)
-└── README.tr.md           # Documentation (Türkçe)
+└── README.md           # This file
 ```
 
 ---
 
-## Configuration
+## 🛠️ Tech Stack
 
-Anda dapat customize behavior aplikasi melalui file `config.py`:
-
-### Camera Configuration
-
-```python
-class CameraConfig:
-    device_id: int = 0        # Camera device ID (0, 1, 2, ...)
-    width: int = 640          # Resolution width
-    height: int = 480         # Resolution height
-    fps: int = 40             # Frames per second
-```
-
-### Pose Detection Configuration
-
-```python
-class PoseDetectionConfig:
-    hand_raise_threshold: float = 0.05   # Hand raise detection sensitivity
-    mouth_open_threshold: float = 0.15   # Mouth open detection sensitivity
-    hand_face_distance_threshold: float = 0.15  # Hand to face distance
-```
-
-### Logging Configuration
-
-```python
-class LoggingConfig:
-    level: str = "INFO"                  # DEBUG, INFO, WARNING, ERROR
-    format: str = "%(asctime)s - %(levelname)s - %(message)s"
-    log_to_file: bool = False           # Save log ke file
-    log_file: str = "monkey_pose.log"
-```
+| Library   | Version | Purpose                  |
+| --------- | ------- | ------------------------ |
+| Python    | 3.12.x  | Programming language     |
+| MediaPipe | 0.10.14 | Pose/hand/face detection |
+| OpenCV    | 4.10.0  | Video processing         |
+| PyQt5     | 5.15.11 | User interface           |
+| NumPy     | 1.26.4  | Numerical operations     |
 
 ---
 
-## Troubleshooting
+## 🤝 Contributing
 
-### Common Issues
+Contributions are welcome! Here's how:
 
-#### Camera tidak terdeteksi
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-**Solution:**
-
-```python
-# Edit config.py, ubah device_id
-class CameraConfig:
-    device_id: int = 1  # Coba nilai 0, 1, 2, dst.
-```
-
-Atau check available camera devices:
-
-```bash
-python -c "import cv2; [print(f'Camera {i}') for i in range(5) if cv2.VideoCapture(i).isOpened()]"
-```
-
-#### MediaPipe Error
-
-**Root cause:** Python version tidak sesuai
-
-**Solution:**
-
-```bash
-python --version  # Pastikan output: Python 3.12.x
-```
-
-Jika menggunakan Python 3.13+, uninstall dan install Python 3.12.
-
-#### Slow Performance
-
-**Solution:**
-
-1. Close aplikasi lain yang menggunakan camera
-2. Reduce resolution di `config.py`:
-
-```python
-class CameraConfig:
-    width: int = 320
-    height: int = 240
-    fps: int = 20
-```
-
-3. Pastikan tidak ada background process yang heavy
-
-#### Dependencies Error
-
-**Solution:**
-
-```bash
-# Hapus virtual environment lama
-rm -rf venv  # Linux/macOS
-# atau
-rmdir /s venv  # Windows
-
-# Buat virtual environment baru
-python3.12 -m venv venv
-source venv/bin/activate  # atau venv\Scripts\activate di Windows
-
-# Install ulang dependencies
-pip install --upgrade pip
-pip install -r requirements.txt
-```
-
-### Getting Help
-
-Jika issue masih berlanjut:
-
-1. Check [Issues](https://github.com/beyzatanriverdi/monkey_pose_mimic/issues) yang sudah ada
-2. Create issue baru dengan informasi:
-   * Python version (`python --version`)
-   * Operating system
-   * Error message lengkap
-   * Steps untuk reproduce issue
+Please ensure your code follows the existing style and includes appropriate documentation.
 
 ---
 
-## Development
-
-### Setup Development Environment
-
-```bash
-# Install development dependencies
-pip install -r requirements-dev.txt
-
-# Atau install secara individual
-pip install black mypy ruff pytest
-```
-
-### Code Quality Tools
-
-```bash
-# Format code
-black .
-
-# Type checking
-mypy main.py pose_detector.py
-
-# Linting
-ruff check .
-
-# Run tests
-pytest
-```
-
-### Contribution Guidelines
-
-1. Fork repository ini
-2. Create branch untuk feature baru (`git checkout -b feature/NamaFitur`)
-3. Pastikan code mengikuti style guide:
-   * Gunakan Black untuk formatting
-   * Add type hints
-   * Write docstrings untuk public functions
-4. Commit changes (`git commit -m 'Menambahkan fitur X'`)
-5. Push ke branch (`git push origin feature/NamaFitur`)
-6. Create Pull Request dengan description yang jelas
-
----
-
-## Roadmap
-
-### Planned Features
-
-* [ ] Support untuk lebih banyak pose
-* [ ] Multiple character options
-
----
-
-## Development Team
+## 👥 Authors
 
 ### Beyza Tanriverdi
 
-* **Email:** tnrvrd.beyza@gmail.com
-* **GitHub:** [@beyzatanriverdi](https://github.com/beyzatanriverdi)
-* **LinkedIn:** [Beyza Tanriverdi](https://www.linkedin.com/in/beyza-tanr1verdi-8a46b0364)
+* 📧 Email: tnrvrd.beyza@gmail.com
+* 🐙 GitHub: [@beyzatanriverdi](https://github.com/beyzatanriverdi)
+* 💼 LinkedIn: [Beyza Tanriverdi](https://www.linkedin.com/in/beyza-tanr1verdi-8a46b0364)
 
 ### Kadir Talha Uncu
 
-* **Email:** talhauncu.dev@gmail.com
-* **GitHub:** [@talhauncu](https://github.com/talhauncu)
-* **LinkedIn:** [Kadir Talha Uncu](https://www.linkedin.com/in/kadir-talha-uncu-622186339)
+* 📧 Email: talhauncu.dev@gmail.com
+* 🐙 GitHub: [@talhauncu](https://github.com/talhauncu)
+* 💼 LinkedIn: [Kadir Talha Uncu](https://www.linkedin.com/in/kadir-talha-uncu-622186339)
 
 ---
 
-## License
+## 📄 License
 
-Project ini dilisensikan di bawah [MIT License](https://claude.ai/chat/LICENSE). Anda bebas untuk use, modify, dan distribute software ini sesuai dengan terms of license.
-
----
-
-## Acknowledgments
-
-Project ini tidak akan terwujud tanpa support dari:
-
-* **[Google MediaPipe](https://mediapipe.dev/)** - Powerful machine learning framework
-* **[OpenCV](https://opencv.org/)** - Open-source computer vision library
-* **[PyQt5](https://www.riverbankcomputing.com/software/pyqt/)** - Cross-platform GUI framework
+This project is licensed under the [MIT License](https://claude.ai/chat/LICENSE) - feel free to use, modify, and distribute as you wish.
 
 ---
 
-## Citation
+## 🙏 Acknowledgments
 
-Jika Anda menggunakan project ini dalam research atau publication, mohon cantumkan reference berikut:
+Built with these amazing technologies:
+
+* [Google MediaPipe](https://mediapipe.dev/) - ML framework
+* [OpenCV](https://opencv.org/) - Computer vision library
+* [PyQt5](https://www.riverbankcomputing.com/software/pyqt/) - GUI framework
+
+---
+
+## 📖 Citation
+
+If you use this project in your research, please cite:
 
 ```bibtex
 @software{monkey_pose_mimic,
   author = {Tanriverdi, Beyza and Uncu, Kadir Talha},
-  title = {Monkey Pose Mimic: Real-time Pose Detection with Interactive Character},
+  title = {Monkey Pose Mimic: Real-time Pose Detection},
   year = {2024},
   url = {https://github.com/beyzatanriverdi/monkey_pose_mimic}
 }
@@ -441,10 +257,10 @@ Jika Anda menggunakan project ini dalam research atau publication, mohon cantumk
 ---
 
 <div align="center">
-**Developed dengan ❤️ oleh Beyza Tanriverdi & Kadir Talha Uncu**
+**Made with ❤️ by Beyza Tanriverdi & Kadir Talha Uncu**
 
-⭐ Jika project ini bermanfaat, berikan star di GitHub!
+⭐ Star this repo if you find it helpful!
 
-[Report Bug](https://github.com/beyzatanriverdi/monkey_pose_mimic/issues) · [Request Feature](https://github.com/beyzatanriverdi/monkey_pose_mimic/issues) · [Documentation](https://github.com/beyzatanriverdi/monkey_pose_mimic/wiki)
+[Report Bug](https://github.com/beyzatanriverdi/monkey_pose_mimic/issues) · [Request Feature](https://github.com/beyzatanriverdi/monkey_pose_mimic/issues)
 
 </div>
